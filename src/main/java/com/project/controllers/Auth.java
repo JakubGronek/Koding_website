@@ -1,8 +1,7 @@
 package com.project.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -11,6 +10,10 @@ class Auth {
     public String loginPage(){
         return "Login page";
     }
+    @PostMapping("/login")
+    public String loginAuth(@RequestParam String username, @RequestParam String password){
+        return "TMP";
+    };
 
     @GetMapping("/register")
     public String registrationPage(){
