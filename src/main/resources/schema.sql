@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS `users`(
 CREATE TABLE IF NOT EXISTS `tasks`(
                         `id` int not null AUTO_INCREMENT primary key,
                         `name` varchar(200) not null,
-                        `description` varchar(300) not null
+                        `shortDesc` varchar(300) not null,
+                        `description` varchar(300) not null,
+                        `points` int not null
 );
 CREATE TABLE IF NOT EXISTS `tasks_time`(
                              `username` varchar(200) not null,

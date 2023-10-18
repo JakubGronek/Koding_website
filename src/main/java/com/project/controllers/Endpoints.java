@@ -2,6 +2,8 @@ package com.project.controllers;
 
 import com.project.models.Tasks;
 import com.project.repositories.TaskRepository;
+import com.project.repositories.TaskTimeRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +18,19 @@ import java.util.Optional;
 class Endpoints {
     @Autowired
     TaskRepository taskRepository;
+    @Autowired
+    TaskTimeRepository taskTimeRepository;
 
     @GetMapping("/tasks")
-    public ResponseEntity<List<Tasks>> getAllTasks(@RequestParam(required = false) String name){
+    public ResponseEntity<List<Tasks>> getAllTasks(@RequestBody String token){
+        JSONObject jo = new JSONObject();
         try{
-            List<Tasks> tasks = new ArrayList<>();
-
-            if(name == null){
-                tasks.addAll(taskRepository.findAll());
-            }else{
-                tasks.addAll(taskRepository.findByNameContaining(name));
+            List<Tasks> tasks = new ArrayList<>(taskRepository.findAll());
+            System.out.println(token);
+            for (Tasks task:tasks) {
+                jo.put("name",task.getName());
+                jo.put("desc", task.getShortdesc());
             }
-
             if(tasks.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
