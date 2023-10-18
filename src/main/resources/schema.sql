@@ -1,24 +1,28 @@
-CREATE TABLE IF NOT EXISTS `users`(
-                        `username` varchar(200) not null primary key,
-                        `password` varchar(200) not null
+create table if not exists TASKS(
+    ID  INTEGER auto_increment primary key,
+    NAME CHARACTER VARYING(200) not null,
+    SHORTDESC CHARACTER VARYING(300) not null,
+    DESCRIPTION CHARACTER VARYING(300) not null,
+    POINTS INTEGER not null
 );
-CREATE TABLE IF NOT EXISTS `tasks`(
-                        `id` int not null AUTO_INCREMENT primary key,
-                        `name` varchar(200) not null,
-                        `shortDesc` varchar(300) not null,
-                        `description` varchar(300) not null,
-                        `points` int not null
+
+create table if not exists TEST_CASE(
+    TASK_ID INTEGER not null references TASKS,
+    INPUT INTEGER not null,
+    OUTPUT INTEGER not null,
+    ID INTEGER not null,
+    constraint "TEST_CASE_pk" primary key (ID)
 );
-CREATE TABLE IF NOT EXISTS `tasks_time`(
-                             `username` varchar(200) not null,
-                             `task_id` int not null,
-                             `finish_time` timestamp not null,
-                             foreign key (username) references users(username),
-                             foreign key (task_id) references tasks(id)
+
+create table if not exists USERS(
+    USERNAME CHARACTER VARYING(200) not null primary key,
+    PASSWORD CHARACTER VARYING(200) not null
 );
-CREATE TABLE IF NOT EXISTS `test_case`(
-                            `task_id` int not null,
-                            `input` int not null,
-                            `output` int not null,
-                            foreign key (task_id) references tasks(id)
+
+create table if not exists TASKS_TIME(
+    USERNAME CHARACTER VARYING(200) not null references USERS,
+    TASK_ID INTEGER not null references TASKS,
+    FINISH_TIME TIMESTAMP not null,
+    ID INTEGER not null,
+    constraint "TASKS_TIME_pk" primary key (ID)
 );
