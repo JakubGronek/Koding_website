@@ -5,7 +5,6 @@ import com.project.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ class Endpoints {
 
     @GetMapping
     public String home(){
-        return "Home page";
+        return "index";
     }
 
     @GetMapping("/tasks")
@@ -50,4 +49,5 @@ class Endpoints {
         Optional<Tasks> taskData = taskRepository.findById(id);
         return taskData.map(tasks -> new ResponseEntity<>(tasks, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     };
+
 }

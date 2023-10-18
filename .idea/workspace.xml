@@ -5,21 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d69bd49-a587-4c21-be55-0ac5714d3f8b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/models/Tasks.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/repositories/TaskRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/models/Users.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/repositories/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/utility/AesUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/utility/PasswordED.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/projekt.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/projekt.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/DemoApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/DemoApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/projekt.trace.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/projekt.trace.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/controllers/Auth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/controllers/Auth.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/project/controllers/Endpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/controllers/Endpoints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/project/DemoApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project/DemoApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/project/controllers/Auth.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project/controllers/Auth.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/project/controllers/Endpoints.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/project/controllers/Endpoints.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +26,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="com.haulmont.jpb.JpaEntity" />
         <option value="Class" />
         <option value="Interface" />
       </list>
@@ -102,7 +100,7 @@
       <workItem from="1697396850810" duration="5243000" />
       <workItem from="1697444220480" duration="56000" />
       <workItem from="1697444573847" duration="138000" />
-      <workItem from="1697444721625" duration="4693000" />
+      <workItem from="1697444721625" duration="13975000" />
     </task>
     <servers />
   </component>
