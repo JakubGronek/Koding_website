@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, ChevronRight } from "lucide-react";
 
 interface TaskProps {
     id: number

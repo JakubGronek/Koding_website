@@ -1,4 +1,5 @@
 import Header from "./Header"
+import Editor from "./Editor"
 import Tasks from "./Tasks"
 
 function App() {
