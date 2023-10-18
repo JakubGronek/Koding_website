@@ -1,1 +1,0 @@
-INSERT INTO users values ('test1','test1')

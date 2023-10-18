@@ -12,14 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api")
 class Endpoints {
     @Autowired
     TaskRepository taskRepository;
-
-    @GetMapping
-    public String home(){
-        return "index";
-    }
 
     @GetMapping("/tasks")
     public ResponseEntity<List<Tasks>> getAllTasks(@RequestParam(required = false) String name){
