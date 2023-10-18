@@ -2,6 +2,8 @@ package com.project.controllers;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.project.models.Users;
 import com.project.repositories.UserRepository;
 import com.project.utility.PasswordED;
@@ -64,4 +66,18 @@ class Auth {
             return new ResponseEntity<>(HttpStatus.IM_USED);
         }
     };
+
+    @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getUserInfo(@RequestParam String token) {
+        try {
+            DecodedJWT decodedJWT = JWT.decode(token);
+            String username = decodedJWT.getClaim("username").asString();
+
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                    "username", username
+            ));
+        } catch (JWTDecodeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 }
