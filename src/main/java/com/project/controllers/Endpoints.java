@@ -3,9 +3,11 @@ package com.project.controllers;
 import com.project.models.Tasks;
 import com.project.repositories.TaskRepository;
 import com.project.repositories.TaskTimeRepository;
+import com.project.utility.AuthUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,25 +23,12 @@ class Endpoints {
     @Autowired
     TaskTimeRepository taskTimeRepository;
 
-    @GetMapping("/tasks")
-    public ResponseEntity<List<Tasks>> getAllTasks(@RequestBody String token){
-        JSONObject jo = new JSONObject();
-        try{
-            List<Tasks> tasks = new ArrayList<>(taskRepository.findAll());
-            System.out.println(token);
-            for (Tasks task:tasks) {
-                jo.put("name",task.getName());
-                jo.put("desc", task.getShortdesc());
-            }
-            if(tasks.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+    @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllTasks(@RequestParam String token){
+        if (AuthUtil.getUser(token) == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-            return new ResponseEntity<>(tasks, HttpStatus.OK);
-
-        }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Tasks> tasks = new ArrayList<>(taskRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)

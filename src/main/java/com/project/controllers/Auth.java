@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.project.models.Users;
 import com.project.repositories.UserRepository;
+import com.project.utility.AuthUtil;
 import com.project.utility.PasswordED;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,9 @@ import java.util.Optional;
 @RequestMapping("/auth")
 class Auth {
     PasswordED passwordED = new PasswordED();
-    Algorithm algo = Algorithm.HMAC256("topsekret");
+
     @Autowired
     UserRepository userRepository;
-
-
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> loginAuth(@RequestParam String username, @RequestParam String password) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
@@ -42,11 +41,7 @@ class Auth {
             if (!passwordED.compare(password,usersData.get().getPassword()))
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-            String token = JWT.create()
-                    .withClaim("username", usersData.get().getUsername())
-                    .withIssuer("koding")
-                    .withIssuedAt(new Date(System.currentTimeMillis()))
-                    .sign(algo);
+            String token = AuthUtil.createToken(usersData.get().getUsername());
 
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "token", token
@@ -69,15 +64,13 @@ class Auth {
 
     @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getUserInfo(@RequestParam String token) {
-        try {
-            DecodedJWT decodedJWT = JWT.decode(token);
-            String username = decodedJWT.getClaim("username").asString();
+        String username = AuthUtil.getUser(token);
 
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-                    "username", username
-            ));
-        } catch (JWTDecodeException e) {
+        if (username == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "username", username
+        ));
     }
 }
