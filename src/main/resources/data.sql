@@ -1,1 +1,1 @@
-INSERT INTO users values ('test1','test1')
+INSERT INTO users values ('test','+ZTUPGMKhANnnjyVuEiwfg=='); -- username: test, password: test

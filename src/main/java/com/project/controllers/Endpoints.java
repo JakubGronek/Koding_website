@@ -2,9 +2,7 @@ package com.project.controllers;
 
 import com.project.models.Tasks;
 import com.project.repositories.TaskRepository;
-import com.project.repositories.TaskTimeRepository;
 import com.project.utility.AuthUtil;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,8 +18,6 @@ import java.util.Optional;
 class Endpoints {
     @Autowired
     TaskRepository taskRepository;
-    @Autowired
-    TaskTimeRepository taskTimeRepository;
 
     @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllTasks(@RequestParam String token){
