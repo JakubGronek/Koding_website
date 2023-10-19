@@ -1,5 +1,6 @@
 package com.project.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;
@@ -15,7 +16,8 @@ public class Users {
     @Column(name = "PASSWORD", nullable = false, length = 200)
     private String password;
 
-    @OneToMany(mappedBy = "username")
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<TasksTime> tasksTimes = new LinkedHashSet<>();
 
     public Users() {

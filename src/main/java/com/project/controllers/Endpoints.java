@@ -1,6 +1,7 @@
 package com.project.controllers;
 
 import com.project.models.Tasks;
+import com.project.models.TasksTime;
 import com.project.repositories.TaskRepository;
 import com.project.utility.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -21,9 +20,18 @@ class Endpoints {
 
     @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllTasks(@RequestParam String token){
-        if (AuthUtil.getUser(token) == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        String currentUser = AuthUtil.getUser(token);
+        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
         List<Tasks> tasks = new ArrayList<>(taskRepository.findAll());
+        for(Tasks task: tasks){
+            Set<TasksTime> times = task.getTasksTimes();
+            for(TasksTime time:times){
+                if(Objects.equals(time.getUser().getUsername(), currentUser)){
+                    task.setCompleted(true);
+                }
+            }
+        }
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
@@ -32,6 +40,7 @@ class Endpoints {
     {
         Optional<Tasks> taskData = taskRepository.findById(id);
         return taskData.map(tasks -> new ResponseEntity<>(tasks, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     };
 
 

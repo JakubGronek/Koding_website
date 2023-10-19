@@ -1,5 +1,6 @@
 package com.project.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,11 +17,13 @@ public class TasksTime {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "USERNAME", nullable = false)
-    private com.project.models.Users username;
+    @JsonBackReference
+    private com.project.models.Users user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "TASK_ID", nullable = false)
+    @JsonBackReference
     private com.project.models.Tasks task;
 
     @Column(name = "FINISH_TIME", nullable = false)
@@ -34,12 +37,12 @@ public class TasksTime {
         this.id = id;
     }
 
-    public com.project.models.Users getUsername() {
-        return username;
+    public com.project.models.Users getUser() {
+        return user;
     }
 
-    public void setUsername(com.project.models.Users username) {
-        this.username = username;
+    public void setUser(com.project.models.Users user) {
+        this.user = user;
     }
 
     public com.project.models.Tasks getTask() {

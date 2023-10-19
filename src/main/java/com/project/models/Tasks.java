@@ -1,6 +1,11 @@
 package com.project.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -26,10 +31,24 @@ public class Tasks {
     private Integer points;
 
     @OneToMany(mappedBy = "task")
+    @JsonManagedReference
     private Set<TasksTime> tasksTimes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "task")
+    @JsonManagedReference
     private Set<TestCase> testCases = new LinkedHashSet<>();
+
+
+    @Transient
+    boolean completed;
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 
     public Integer getId() {
         return id;

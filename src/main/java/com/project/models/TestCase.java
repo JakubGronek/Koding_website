@@ -1,5 +1,7 @@
 package com.project.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,6 +16,7 @@ public class TestCase {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "TASK_ID", nullable = false)
+    @JsonBackReference
     private com.project.models.Tasks task;
 
     @Column(name = "INPUT", nullable = false)
