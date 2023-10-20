@@ -25,8 +25,8 @@ function Landing() {
                         }}>Zaloguj się lub zarejestruj</Button>
                 </div>
             </div>
-            <div className="flex flex-row mx-auto gap-32">
-                <div className="flex-1 flex flex-col items-center gap-8">
+            <div className="flex flex-row gap-32">
+                <div className="flex-1 flex flex-col items-center gap-8 w-64">
                     <div className="flex justify-center items-center w-32 h-32 rounded-full border">
                         <GraduationCap className="w-12 h-12" /> 
                     </div>
@@ -35,7 +35,7 @@ function Landing() {
                         <span>Tutaj nauczysz się zaawansowanych algorytmów i zgłębisz tajemnice programowania.</span>
                     </div>
                 </div>
-                <div className="flex-1 flex flex-col items-center gap-8">
+                <div className="flex-1 flex flex-col items-center gap-8 w-64">
                     <div className="flex justify-center items-center w-32 h-32 rounded-full border">
                         <ListChecks className="w-12 h-12" />
                     </div>
@@ -44,7 +44,7 @@ function Landing() {
                         <span>Sprawdź swoją wiedzę poprzez zastosowanie jej w praktyce.</span>
                     </div>
                 </div>
-                <div className="flex-1 flex flex-col items-center gap-8">
+                <div className="flex-1 flex flex-col items-center gap-8 w-64">
                     <div className="flex justify-center items-center w-32 h-32 rounded-full border">
                         <Swords className="w-12 h-12" />
                     </div>

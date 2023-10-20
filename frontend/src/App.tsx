@@ -13,7 +13,7 @@ function App() {
         <AuthDialogContext.Provider value={{ open: authDialogOpen, setOpen: setAuthDialogOpen }}>
             <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
             <Header />
-            <Landing />
+            <Editor />
         </AuthDialogContext.Provider>
     )
 }
