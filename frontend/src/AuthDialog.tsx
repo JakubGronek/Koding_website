@@ -32,6 +32,7 @@ function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterAct
     const authDialog = useContext(AuthDialogContext);
 
     const onSubmit = async () => {
+        if (import.meta.env.DEV) setAuth("asd","def");
         if (pending) return;
         setPending(true);
 
@@ -91,7 +92,7 @@ function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterAct
                 </div>
                 <div>
                     <span className="text-sm text-muted-foreground">Hasło</span>
-                    <Input onChange={onInputChange} name="password" type="text" />
+                    <Input onChange={onInputChange} name="password" type="password" />
                 </div>
             </div>
             <DialogFooter>

@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import './index.css'
 import Layout from './Layout.tsx'
-import { ProtectedRoute, UserlessRoute } from './ProtectedRoute.tsx'
+import { ProtectedRoute, ProtectedRoutePromptLogin, UserlessRoute } from './ProtectedRoute.tsx'
 import Tasks from './Tasks.tsx'
 import Landing from './Landing.tsx'
 import Editor from './Editor.tsx'
@@ -19,7 +19,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: "tasks",
-            element: <Tasks />
+            element: <Tasks viewMode="" />,
+          },
+          {
+            path: "tasks/new",
+            element: <Tasks viewMode=" nowe" />
+          },
+          {
+            path: "tasks/done",
+            element: <Tasks viewMode=" ukonczone" />
           },
           {
             path: "editor/:id",

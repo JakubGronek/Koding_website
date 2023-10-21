@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Goal, GraduationCap, ListChecks, Swords } from "lucide-react";
+import { Book, Goal, GraduationCap, History, ListChecks, Swords } from "lucide-react";
 import { useContext } from "react";
 import { AuthDialogContext } from "./AuthDialog";
 import { authValid, useAuth } from "./useAuth";
+import { Link, redirect, useNavigate } from "react-router-dom";
+
 
 function Landing() {
     const authDialog = useContext(AuthDialogContext);
 
     const { token, username } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <div className="flex flex-col py-48 px-8 gap-64 max-w-screen-xl w-full mx-auto">
@@ -23,14 +26,24 @@ function Landing() {
                         { authValid(token) ? "" : "Aby zacząć zaloguj się: " }
                     </span>
                     {authValid(token) ? <>
-                        <Button variant="default" className="h-fit text-md font-bold flex gap-4">
-                            <Goal size={16} />
-                            Nowe zadania 
-                        </Button>
-                        <Button variant="outline" className="h-fit text-md font-bold flex gap-4">
-                            <Goal size={16} />
-                            Ukonczone zadania
-                        </Button>
+                        <Link to="/tasks/new">
+                            <Button variant="default" className="w-full h-fit text-md font-bold flex gap-4">
+                                <Goal size={16} />
+                                Nowe zadania 
+                            </Button>
+                        </Link>
+                        <Link to="/tasks/done">
+                            <Button variant="secondary" className="w-full h-fit text-md font-bold flex gap-4">
+                                <History size={16} />
+                                Zadania ukonczone
+                            </Button>
+                        </Link>
+                        <Link to="/tasks/all">
+                            <Button variant="outline" className="w-full h-fit text-md font-bold flex gap-4">
+                                <Book size={16} />
+                                Wszystkie zadania
+                            </Button>
+                        </Link>
                         </> 
                          : <Button
                         variant="outline" className="h-fit text-md font-bold"

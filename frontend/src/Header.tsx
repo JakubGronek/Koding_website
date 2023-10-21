@@ -2,7 +2,7 @@ import { ScrollText, HelpCircle, LandPlot, LineChart, LogIn, LogOut } from "luci
 import { useContext } from "react"
 import { AuthDialogContext } from "./AuthDialog"
 import { useAuth } from "./useAuth";
-import { Link, NavLink } from "react-router-dom";
+import {  Link, NavLink } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function Header() {
@@ -32,10 +32,10 @@ export default function Header() {
     return (
         <header className="w-full h-14 border-b">
             <div className="flex items-center py-4 gap-16 max-w-screen-2xl h-full p-8 mx-auto">
-                <div className="flex items-center text-lg gap-4 font-bold">
+                <Link to="/" className="flex items-center text-lg gap-4 font-bold">
                     <LandPlot />
                     koding
-                </div>
+                </Link>
 
 
                 <div className="flex items-center font-semibold gap-6 text-sm">

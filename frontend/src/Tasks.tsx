@@ -41,12 +41,12 @@ function Task({ id, name, desc, done, points } : TaskProps) {
     );
 }
 
-function Tasks() {
+function Tasks({ viewMode } : { viewMode: string, }) {
     return (
         <div className="p-8 max-w-screen-2xl w-full mx-auto">
             <div className="flex flex-row mb-16">
                 <div>
-                    <h1 className="text-3xl font-extrabold">Zadania</h1>
+                    <h1 className="text-3xl font-extrabold">Zadania {viewMode} </h1>
                     <span className="text-xl text-muted-foreground">Ukończyłeś 1/15 zadań.</span>
                 </div>
                 <div className="ml-auto my-auto">
