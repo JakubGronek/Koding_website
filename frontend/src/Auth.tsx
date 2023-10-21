@@ -1,34 +1,44 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
-type AuthContextType = {
-    token: string,
-    username: string,
-    auth: (username: string, password: string) => unknown
-} | null;
+type AuthState = {
+    token: string | null,
+    username: string | null,
+}
+
+type AuthInterface = {
+    auth: (username: string, password: string) => unknown,
+}
+
+type AuthContextType = (AuthState & AuthInterface) | null;
 
 const AuthContext = createContext<AuthContextType>(null);
 
 const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
-    const [ token, setToken ] = useState<string>("");
-    const [ username, setUsername ] = useState<string>("");
+    const [ authState, setAuthState ] = useState<AuthState>({
+        token: null,
+        username: null
+    });
 
-    const auth = async (login: string, password: string) => {
-        setToken("abcd");
-    }
+    useEffect(() => {
+        window.localStorage.setItem("auth", JSON.stringify(authState));
+    }, [ authState ]);
 
-    const fetchUserinfo = async () => {
-        setUsername("abcd");
+    const auth = async (username: string, password: string) => {
+        setAuthState({
+            token: password,
+            username
+        });
     }
 
     return (
         <AuthContext.Provider value={{
-            token,
-            auth,
-            username
+            ...authState,
+            auth
         }}>
             {children}
         </AuthContext.Provider>
     )
 };
+
 
 export { AuthProvider, AuthContext }

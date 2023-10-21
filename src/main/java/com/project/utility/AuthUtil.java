@@ -18,7 +18,6 @@ import java.util.Base64;
 import java.util.Date;
 
 public class AuthUtil {
-
     private static final String ISSUER_NAME = "koding";
 
     private static Algorithm algo = Algorithm.HMAC256("topsekret");
