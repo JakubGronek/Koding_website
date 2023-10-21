@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useContext, useState } from "react"
 import { API_BASE_URL } from "./globals";
+import { useToast } from "@/components/ui/use-toast";
+import { AuthContext } from "./Auth";
+import { useAuth } from "./useAuth";
 
 type LoginRegisterDialogActions = "login" | "register";
 type LoginRegisterActionChangeFunction = ((desiredAction: LoginRegisterDialogActions) => void);
@@ -10,6 +13,67 @@ type LoginRegisterActionChangeFunction = ((desiredAction: LoginRegisterDialogAct
 type AuthDialogForm = Record<string, string>;
 
 function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterActionChangeFunction }) {
+    const [form, setForm] = useState<AuthDialogForm>({
+        username: "",
+        password: "",
+        repeatPassword: "",
+    });
+
+    const [pending, setPending] = useState<boolean>(false);
+
+    const onInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        const formCopy = Object.assign({}, form);
+        formCopy[e.target.name] = e.target.value;
+        setForm(formCopy);
+    }
+
+    const { toast } = useToast();
+    const { setAuth } = useAuth();
+    const authDialog = useContext(AuthDialogContext);
+
+    const onSubmit = async () => {
+        if (pending) return;
+        setPending(true);
+
+        const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: form.username,
+                password: form.password
+            })
+        });
+
+        if (response.status === 400) { // BAD_REQUEST
+            toast({
+                title: "Wystąpił bląd!",
+                description: "Prosze sprawdzic poprawnosc formularza i sprobowac ponownie.",
+                variant: "destructive"
+            })
+        } else if (response.status === 401) { // IM_USED
+            toast({
+                title: "Wystąpił bląd!",
+                description: "Wprowadzono nieprawidłowe dane.",
+                variant: "destructive"
+            })
+        } else if (response.status === 200) { // OK
+            toast({
+                title: "Zalogowano!",
+                description: "Witaj ponownie na Koding'u :)",
+            })
+
+            authDialog?.setOpen(false);
+
+            const body = await response.json();
+
+            setAuth(body.token, form.username);
+        }
+
+        setPending(false);
+    }
+
     return (
         <DialogContent className="max-w-[420px]">
             <DialogHeader>
@@ -23,17 +87,17 @@ function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterAct
             <div className="flex flex-col gap-2 my-4">
                 <div>
                     <span className="text-sm text-muted-foreground">Nazwa uzytkownika</span>
-                    <Input type="text" />
+                    <Input onChange={onInputChange} name="username" type="text" />
                 </div>
                 <div>
                     <span className="text-sm text-muted-foreground">Hasło</span>
-                    <Input type="text" />
+                    <Input onChange={onInputChange} name="password" type="text" />
                 </div>
             </div>
             <DialogFooter>
                 <Button variant="link" className="mr-auto px-0"
                     onClick={() => onActionChange("register")}>Nie masz konta? Zarejestruj się</Button>
-                <Button>Wyślij</Button>
+                <Button onClick={onSubmit} disabled={pending} >Wyślij</Button>
             </DialogFooter>
         </DialogContent>
     )
@@ -47,7 +111,7 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
         repeatPassword: "",
     });
 
-    const [pending, setPending] = useState<boolean>(true);
+    const [pending, setPending] = useState<boolean>(false);
 
     const onInputChange : React.ChangeEventHandler<HTMLInputElement> = (e) => {
         const formCopy = Object.assign({}, form);
@@ -55,13 +119,46 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
         setForm(formCopy);
     }
 
+    const { toast } = useToast();
+    const authDialog = useContext(AuthDialogContext);
+    
     const onSubmit = async () => {
         if (pending) return;
         setPending(true);
         
-        fetch("/auth/register", {
+        const response = await fetch("/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: form.username,
+                password: form.password
+            })
+        });
 
-        })
+        if (response.status === 400) { // BAD_REQUEST
+            toast({
+                title: "Wystąpił bląd!",
+                description: "Prosze sprawdzic poprawnosc formularza i sprobowac ponownie.",
+                variant: "destructive"
+            })
+        } else if (response.status === 226) { // IM_USED
+            toast({
+                title: "Wystąpił bląd!",
+                description: "Uzytkownik z taką nazwą juz istnieje.",
+                variant: "destructive"
+            })
+        } else if (response.status === 201) { // OK
+            toast({
+                title: "Stworzono twoje konto",
+                description: "Mozesz sie teraz zalogowac.",
+            })
+
+            authDialog?.setOpen(false);
+        }
+
+        setPending(false);
     }
 
     return (
@@ -92,7 +189,7 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
                 <Button variant="link" className="mr-auto px-0"
                     onClick={() => onActionChange("login")}>Masz juz konto? Zaloguj się</Button>
 
-                <Button disabled={pending}>Wyślij</Button>
+                <Button onClick={onSubmit} disabled={pending}>Wyślij</Button>
             </DialogFooter>
         </DialogContent>
     )
@@ -102,8 +199,11 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
 function AuthDialog({ open, onOpenChange } : { open: boolean, onOpenChange?: (open: boolean) => void }) {
     const [action, setAction] = useState<LoginRegisterDialogActions>("login");
 
-    const onDialogOpenChange = (dialogOpen: boolean) => {
-        if (dialogOpen) setAction("login");
+    const onDialogOpenChange = (dialogOpen: boolean) => {;
+        if (dialogOpen) {
+            //console.log("login");
+            setAction("login");
+        }
         if (onOpenChange) onOpenChange(dialogOpen);
     }
 

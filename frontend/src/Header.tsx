@@ -1,9 +1,33 @@
-import { ScrollText, HelpCircle, LandPlot, LineChart, LogIn } from "lucide-react"
+import { ScrollText, HelpCircle, LandPlot, LineChart, LogIn, LogOut } from "lucide-react"
 import { useContext } from "react"
 import { AuthDialogContext } from "./AuthDialog"
+import { useAuth } from "./useAuth";
+import { Link, NavLink } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Header() {
     const authDialog = useContext(AuthDialogContext);
+    const { username, setAuth } = useAuth(); 
+
+    const { toast } = useToast();
+
+    const activeLink = ({ isActive }) => {
+        return "flex items-center gap-2 transition-colors hover:text-ring" + " " 
+            + (isActive ? "text-primary" : "text-muted-foreground" );
+    }
+
+    const logout = () => {
+        toast({
+            title: "Wylogowano z konta",
+            description: 
+                <>
+                    Wylogowano z konta <b>{username}</b>
+                </> 
+        })
+
+        setAuth("", "");
+        
+    }
 
     return (
         <header className="w-full h-14 border-b">
@@ -15,10 +39,10 @@ export default function Header() {
 
 
                 <div className="flex items-center font-semibold gap-6 text-sm">
-                    <a className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#">
+                    <NavLink className={activeLink} to="/tasks">
                         <ScrollText size={16} />
                         Zadania
-                    </a>
+                    </NavLink>
                     <a className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#">
                         <LineChart size={16} />
                         Statystyki
@@ -29,15 +53,26 @@ export default function Header() {
                     </a>
                 </div>
                 <div className="flex items-center font-semibold gap-6 ml-auto text-sm">
-                    <a 
-                        className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#"
-                        onClick={(e) => { 
-                            e.preventDefault();
-                            authDialog?.setOpen(!authDialog.open);
-                        }}>
-                        Zaloguj się lub zarejestruj
-                        <LogIn size={16} />
-                    </a>
+                    {
+                        username == "" ? 
+                            <a
+                                className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    authDialog?.setOpen(!authDialog.open);
+                                }}>
+                                Zaloguj się lub zarejestruj
+                                <LogIn size={16} />
+                            </a>
+                        :
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <b>{username}</b>
+                                <a href="#" onClick={logout} className="hover:text-ring  flex items-center gap-2 transition-colors">
+                                    <LogOut size={16} />      
+                                </a>
+                            </div>
+                    }
+                    
                 </div>
             </div>
         </header>

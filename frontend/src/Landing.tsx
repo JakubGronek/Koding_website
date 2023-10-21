@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { GraduationCap, ListChecks, Swords } from "lucide-react";
+import { Goal, GraduationCap, ListChecks, Swords } from "lucide-react";
 import { useContext } from "react";
 import { AuthDialogContext } from "./AuthDialog";
+import { authValid, useAuth } from "./useAuth";
 
 function Landing() {
     const authDialog = useContext(AuthDialogContext);
+
+    const { token, username } = useAuth();
 
     return (
         <div className="flex flex-col py-48 px-8 gap-64 max-w-screen-xl w-full mx-auto">
@@ -16,13 +19,25 @@ function Landing() {
                     <span className="text-lg">Zadania łatwe, proste i przyjemne.</span>
                 </div>
                 <div className="flex flex-col w-[260px] ml-auto justify-center gap-2">
-                    <span className="text-muted-foreground text-center">Aby zacząć zaloguj się: </span>
-                    <Button 
+                    <span className="text-muted-foreground text-center">
+                        { authValid(token) ? "" : "Aby zacząć zaloguj się: " }
+                    </span>
+                    {authValid(token) ? <>
+                        <Button variant="default" className="h-fit text-md font-bold flex gap-4">
+                            <Goal size={16} />
+                            Nowe zadania 
+                        </Button>
+                        <Button variant="outline" className="h-fit text-md font-bold flex gap-4">
+                            <Goal size={16} />
+                            Ukonczone zadania
+                        </Button>
+                        </> 
+                         : <Button
                         variant="outline" className="h-fit text-md font-bold"
                         onClick={(e) => {
                             e.preventDefault();
                             authDialog?.setOpen(!authDialog.open);
-                        }}>Zaloguj się lub zarejestruj</Button>
+                        }}> Zaloguj się lub zarejestruj</Button> }
                 </div>
             </div>
             <div className="flex flex-row gap-32">

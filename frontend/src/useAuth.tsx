@@ -1,11 +1,14 @@
 import { useContext } from "react";
-import { AuthContext } from "./Auth";
+import { AuthContext, AuthContextType } from "./Auth";
+
 
 const useAuth = () => {
     const auth =  useContext(AuthContext);
-    if (auth?.token != null) {
-        return auth;
-    } else return null;
+    return auth;
 }
 
-export { useAuth };
+const authValid = (a) => {
+    return a  != "";
+}
+
+export { useAuth, authValid };

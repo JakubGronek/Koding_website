@@ -1,31 +1,40 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 type AuthState = {
-    token: string | null,
-    username: string | null,
+    token: string,
+    username: string,
 }
 
 type AuthInterface = {
-    auth: (username: string, password: string) => unknown,
+    setAuth: ((token: string, username: string) => unknown),
 }
 
-type AuthContextType = (AuthState & AuthInterface) | null;
+export type AuthContextType = (AuthState & AuthInterface);
 
-const AuthContext = createContext<AuthContextType>(null);
+const AuthContext = createContext<AuthContextType>({
+    token: "",
+    username: "",
+    setAuth: () => {}
+});
 
 const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
     const [ authState, setAuthState ] = useState<AuthState>({
-        token: null,
-        username: null
+        token: "",
+        username: ""
     });
 
     useEffect(() => {
-        window.localStorage.setItem("auth", JSON.stringify(authState));
+        const stored = JSON.parse(window.localStorage.getItem("auth"));
+        setAuthState(stored);
+    }, [])
+
+    useEffect(() => {
+        window.localStorage.setItem("auth", JSON.stringify(authState));      
     }, [ authState ]);
 
-    const auth = async (username: string, password: string) => {
+    const setAuth = async (token: string, username: string) => {
         setAuthState({
-            token: password,
+            token,
             username
         });
     }
@@ -33,7 +42,7 @@ const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
     return (
         <AuthContext.Provider value={{
             ...authState,
-            auth
+            setAuth
         }}>
             {children}
         </AuthContext.Provider>
