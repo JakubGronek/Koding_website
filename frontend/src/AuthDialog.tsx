@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { ReactNode, createContext, useState } from "react"
+import { API_BASE_URL } from "./globals";
 
 type LoginRegisterDialogActions = "login" | "register";
 type LoginRegisterActionChangeFunction = ((desiredAction: LoginRegisterDialogActions) => void);
@@ -46,7 +47,7 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
         repeatPassword: "",
     });
 
-    const [pending, setPending] = useState<boolean>(false);
+    const [pending, setPending] = useState<boolean>(true);
 
     const onInputChange : React.ChangeEventHandler<HTMLInputElement> = (e) => {
         const formCopy = Object.assign({}, form);
@@ -54,9 +55,13 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
         setForm(formCopy);
     }
 
-    const onSubmit = () => {
-        console.log("click");
+    const onSubmit = async () => {
+        if (pending) return;
+        setPending(true);
+        
+        fetch("/auth/register", {
 
+        })
     }
 
     return (
