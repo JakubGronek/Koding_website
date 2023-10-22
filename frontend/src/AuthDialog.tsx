@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { ReactNode, createContext, useContext, useState } from "react"
 import { API_BASE_URL } from "./globals";
 import { useToast } from "@/components/ui/use-toast";
-import { AuthContext } from "./Auth";
 import { useAuth } from "./useAuth";
 
 type LoginRegisterDialogActions = "login" | "register";
@@ -66,9 +65,7 @@ function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterAct
             })
 
             authDialog?.setOpen(false);
-
             const body = await response.json();
-
             setAuth(body.token, form.username);
         }
 

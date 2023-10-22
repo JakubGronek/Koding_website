@@ -46,8 +46,8 @@ class Auth {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                     "token", token
             ));
-        }  {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     };
 

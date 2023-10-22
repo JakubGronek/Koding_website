@@ -8,7 +8,6 @@ import { useState } from "react";
 function Layout() {
     const [authDialogOpen, setAuthDialogOpen] = useState(false);
 
-
     
     return (
         <AuthProvider>
