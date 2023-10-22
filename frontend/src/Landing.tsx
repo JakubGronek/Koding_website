@@ -3,14 +3,13 @@ import { Book, Goal, GraduationCap, History, ListChecks, Swords } from "lucide-r
 import { useContext } from "react";
 import { AuthDialogContext } from "./AuthDialog";
 import { authValid, useAuth } from "./useAuth";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function Landing() {
     const authDialog = useContext(AuthDialogContext);
 
-    const { token, username } = useAuth();
-    const navigate = useNavigate();
+    const { token } = useAuth();
 
     return (
         <div className="flex flex-col py-48 px-8 gap-64 max-w-screen-xl w-full mx-auto">

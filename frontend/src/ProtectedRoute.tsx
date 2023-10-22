@@ -8,9 +8,10 @@ const ProtectedRoute : React.FC<React.PropsWithoutRef<{redirect: string, t?: boo
     
     const auth = useAuth();
 
-    console.log(`protected ${redirect}, ${t}, ${auth.token} ${auth.token != "" ? "" : "[no token]"}`)
+    //console.log(`protected ${redirect}, ${t}, ${auth.token} ${auth.token != "" ? "" : "[no token]"}`)
 
     if (t && auth.token == "") {
+        console.log(`protected redirect to ${redirect} with ${t} [${auth.token}]`)
         return <Navigate to={redirect} />;
     } else {
         return <Outlet />
@@ -20,7 +21,7 @@ const ProtectedRoute : React.FC<React.PropsWithoutRef<{redirect: string, t?: boo
 const ProtectedRoutePromptLogin : React.FC<React.PropsWithoutRef< { redirect: string }>> = ({ redirect }) => {
     const auth = useAuth();
 
-    console.log(`protected_prompt ${redirect}, ${auth.token} ${auth.token != "" ? "" : "[no token]"}`)
+    //console.log(`protected_prompt ${redirect}, ${auth.token} ${auth.token != "" ? "" : "[no token]"}`)
     const { setOpen } = useContext(AuthDialogContext);
 
     if (auth.token == "") {

@@ -31,11 +31,11 @@ function AuthDialogLogin({ onActionChange } : { onActionChange: LoginRegisterAct
     const authDialog = useContext(AuthDialogContext);
 
     const onSubmit = async () => {
-        if (import.meta.env.DEV) setAuth("asd","def");
+        //if (import.meta.env.DEV) setAuth("asd","def");
         if (pending) return;
         setPending(true);
 
-        const response = await fetch("/auth/login", {
+        const response = await fetch(API_BASE_URL + "/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -124,7 +124,7 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
         if (pending) return;
         setPending(true);
         
-        const response = await fetch("/auth/register", {
+        const response = await fetch(API_BASE_URL + "/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -197,7 +197,7 @@ function AuthDialogRegister({ onActionChange } : { onActionChange: LoginRegister
 function AuthDialog({ open, onOpenChange } : { open: boolean, onOpenChange?: (open: boolean) => void }) {
     const [action, setAction] = useState<LoginRegisterDialogActions>("login");
 
-    const onDialogOpenChange = (dialogOpen: boolean) => {;
+    const onDialogOpenChange = (dialogOpen: boolean) => {
         if (dialogOpen) {
             //console.log("login");
             setAction("login");

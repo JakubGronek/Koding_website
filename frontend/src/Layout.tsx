@@ -4,6 +4,7 @@ import { AuthDialog, AuthDialogContext } from "./AuthDialog";
 import Header from "./Header";
 import { Toaster } from "@/components/ui/toaster"
 import { useState } from "react";
+import { TasksContext, TasksProvider } from "./TasksContext";
 
 function Layout() {
     const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -14,7 +15,11 @@ function Layout() {
             <AuthDialogContext.Provider value={{ open: authDialogOpen, setOpen: setAuthDialogOpen }}>
                 <AuthDialog open={authDialogOpen} onOpenChange={setAuthDialogOpen} />
                 <Header />
-                <Outlet />
+                
+                <TasksProvider>
+                    <Outlet />
+                </TasksProvider>
+
                 <Toaster />
             </AuthDialogContext.Provider>
         </AuthProvider>

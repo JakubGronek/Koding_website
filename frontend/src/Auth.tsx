@@ -1,4 +1,5 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
+import { authValid } from "./useAuth";
 
 type AuthState = {
     token: string,
@@ -18,15 +19,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
-    const [ authState, setAuthState ] = useState<AuthState>({
-        token: "",
-        username: ""
-    });
-
-    useEffect(() => {
-        const stored = JSON.parse(window.localStorage.getItem("auth"));
-        setAuthState(stored);
-    }, [])
+    const [authState, setAuthState] = useState<AuthState>(JSON.parse(window.localStorage.getItem("auth")));
 
     useEffect(() => {
         window.localStorage.setItem("auth", JSON.stringify(authState));      

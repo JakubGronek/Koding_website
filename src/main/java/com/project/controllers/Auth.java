@@ -79,7 +79,7 @@ class Auth {
         if (token.equals(""))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        String username = AuthUtil.getUser(token);
+        String username = AuthUtil.getUsername(token);
 
         if (username == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

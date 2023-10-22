@@ -3,9 +3,12 @@ package com.project.utility;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.project.MainApplication;
+import com.project.models.Users;
+import com.project.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
@@ -26,13 +29,20 @@ public class AuthUtil {
             .withClaimPresence("username")
             .build();
 
-    public static String getUser(String token) {
+    public static String getUsername(String token) {
         try {
             DecodedJWT decodedJWT = verifier.verify(token);
             return decodedJWT.getClaim("username").asString();
         } catch(JWTVerificationException e) {
             return null;
         }
+    }
+
+    public static Users getUser(String token, UserRepository repo) {
+        String username = getUsername(token);
+        if (username == null) return null;
+
+        return repo.findById(username).get();
     }
 
     public static String createToken(String username) {
