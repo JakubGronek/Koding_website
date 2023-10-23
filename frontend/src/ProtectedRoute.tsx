@@ -1,14 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "./useAuth";
+import { authValid, useAuth } from "./useAuth";
 import { useContext } from "react";
 import { AuthDialogContext } from "./AuthDialog";
 
-const ProtectedRoute : React.FC<React.PropsWithoutRef<{redirect: string, t?: boolean}>> = ({redirect, t}) => {
-    t = typeof t !== "undefined" ? t : true;
-    
+const ProtectedRoute : React.FC<React.PropsWithoutRef<{redirect: string}>> = ({redirect}) => {  
     const auth = useAuth();
 
-    if (t && auth.token == "") {
+    if (authValid(auth.token)) {
         return <Navigate to={redirect} />;
     } else {
         return <Outlet />
@@ -29,7 +27,7 @@ const ProtectedRoutePromptLogin : React.FC<React.PropsWithoutRef< { redirect: st
 };
 
 const UserlessRoute: React.FC<React.PropsWithoutRef<{ redirect : string}>> = ({ redirect }) => {
-    return ProtectedRoute({ redirect, t: false });
+    return ProtectedRoute({ redirect });
 };
 
 

@@ -4,7 +4,8 @@ import { AuthDialog, AuthDialogContext } from "./AuthDialog";
 import Header from "./Header";
 import { Toaster } from "@/components/ui/toaster"
 import { useState } from "react";
-import { TasksContext, TasksProvider } from "./TasksContext";
+import { TasksProvider } from "./TasksContext";
+import APIForm from "./api/APIForm";
 
 function Layout() {
     const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -19,6 +20,10 @@ function Layout() {
                 <TasksProvider>
                     <Outlet />
                 </TasksProvider>
+
+                <APIForm action="/api/test" credentials="include" onCallComplete={() => console.log}>
+
+                </APIForm>
 
                 <Toaster />
             </AuthDialogContext.Provider>
