@@ -22,7 +22,7 @@ const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
     const [authState, setAuthState] = useState<AuthState>(JSON.parse(window.localStorage.getItem("auth")));
 
     useEffect(() => {
-        window.localStorage.setItem("auth", JSON.stringify(authState));      
+        if (authValid(authState.token)) window.localStorage.setItem("auth", JSON.stringify(authState));      
     }, [ authState ]);
 
     const setAuth = async (token: string, username: string) => {

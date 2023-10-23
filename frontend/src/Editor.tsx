@@ -1,14 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Download, FileTerminal, History, MoreHorizontal, PencilLine, Play, Save, Trash2 } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 
 import { Textarea } from "@/components/ui/textarea"
@@ -16,6 +6,7 @@ import { TasksContext } from "./TasksContext";
 import { useContext } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { Play } from "lucide-react";
 
 
 function EditorButtons() {

@@ -34,10 +34,9 @@ export default function Header() {
             <div className="flex items-center py-4 gap-16 max-w-screen-2xl h-full p-8 mx-auto">
                 <Link to="/" className="flex items-center text-lg gap-4 font-bold">
                     <LandPlot />
-                    koding
+                    Koding
                 </Link>
-
-
+                
                 <div className="flex items-center font-semibold gap-6 text-sm">
                     <NavLink className={activeLink} to="/tasks">
                         <ScrollText size={16} />

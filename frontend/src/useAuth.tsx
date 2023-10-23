@@ -8,7 +8,7 @@ const useAuth: () => AuthContextType = () => {
 }
 
 const authValid = (a: string) => {
-    return a  != "";
+    return a != "";
 }
 
 export { useAuth, authValid };
