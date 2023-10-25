@@ -1,13 +1,13 @@
 import { ScrollText, HelpCircle, LandPlot, LineChart, LogIn, LogOut } from "lucide-react"
 import { useContext } from "react"
 import { AuthDialogContext } from "./AuthDialog"
-import { useAuth } from "./useAuth";
+import { authValid, useAuth } from "./useAuth";
 import {  Link, NavLink } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function Header() {
     const authDialog = useContext(AuthDialogContext);
-    const { username, setAuth } = useAuth(); 
+    const { username, token, setAuth } = useAuth(); 
 
     const { toast } = useToast();
 
@@ -42,18 +42,18 @@ export default function Header() {
                         <ScrollText size={16} />
                         Zadania
                     </NavLink>
-                    <a className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#">
+                    <NavLink className={activeLink} to="/leaderboard">
                         <LineChart size={16} />
-                        Statystyki
-                    </a>
-                    <a className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#">
+                        Rankingi
+                    </NavLink>
+                    <NavLink className={activeLink} to="/hehehehehe">
                         <HelpCircle size={16} />
                         Pomoc
-                    </a>
+                    </NavLink>
                 </div>
                 <div className="flex items-center font-semibold gap-6 ml-auto text-sm">
                     {
-                        username == "" ? 
+                        !authValid(token) ? 
                             <a
                                 className="hover:text-ring text-muted-foreground flex items-center gap-2 transition-colors" href="#"
                                 onClick={(e) => {

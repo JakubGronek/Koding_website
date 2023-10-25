@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { APIFormContextType } from "./APIForm";
+import { APIFormContextType } from "./RESTForm";
 
 const APIFormContext = createContext<APIFormContextType>(null);
 

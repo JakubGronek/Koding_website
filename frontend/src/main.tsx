@@ -4,10 +4,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './index.css'
 import Layout from './Layout.tsx'
-import { ProtectedRoute, UserlessRoute } from './ProtectedRoute.tsx'
+import { ProtectedRoute } from './ProtectedRoute.tsx'
 import Tasks from './Tasks.tsx'
 import Landing from './Landing.tsx'
 import Editor from './Editor.tsx'
+import Leaderboard from './Leaderboard.tsx'
 
 const router = createBrowserRouter([
   {
@@ -28,14 +29,13 @@ const router = createBrowserRouter([
         path: "editor/:id?"
       },
       {
-        element: <UserlessRoute redirect="/tasks" />,
-        children: [
-          {
-            path: "/",
-            index: true,
-            element: <Landing />
-          }
-        ]
+        element: <Leaderboard />,
+        path: "leaderboard"
+      },
+      { 
+          path: "/",
+          index: true,
+          element: <Landing />
       }
     ]
   }

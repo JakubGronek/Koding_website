@@ -6,7 +6,7 @@ import { AuthDialogContext } from "./AuthDialog";
 const ProtectedRoute : React.FC<React.PropsWithoutRef<{redirect: string}>> = ({redirect}) => {  
     const auth = useAuth();
 
-    if (authValid(auth.token)) {
+    if (!authValid(auth.token)) {
         return <Navigate to={redirect} />;
     } else {
         return <Outlet />
