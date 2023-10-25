@@ -2,6 +2,7 @@ package com.project.controllers;
 
 import com.project.models.Tasks;
 import com.project.models.TasksTime;
+import com.project.models.UserPoints;
 import com.project.models.Users;
 import com.project.repositories.TaskRepository;
 import com.project.repositories.UserRepository;
@@ -68,6 +69,10 @@ class Endpoints {
 
     };
 
+    @GetMapping("/test")
+    public ResponseEntity<List<UserPoints>> scoreboard(){
+        List<UserPoints> userPoints = userRepository.getUsersPoints();
 
-
+         return ResponseEntity.ok().body(userPoints);
+    }
 }

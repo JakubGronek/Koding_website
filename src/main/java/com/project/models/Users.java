@@ -8,6 +8,21 @@ import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
+@NamedNativeQuery(
+        name="test",
+        query = "Select users.username, sum(tasks.points) as points  from users inner join tasks_time on users.username = tasks_time.username inner join tasks on tasks_time.task_id = tasks.id group by users.username",
+        resultSetMapping = "userPoints"
+)
+@SqlResultSetMapping(
+        name = "userPoints",
+        classes = @ConstructorResult(
+                targetClass = UserPoints.class,
+                columns = {
+                        @ColumnResult(name = "username", type = String.class),
+                        @ColumnResult(name = "points", type = Integer.class)
+                }
+        )
+)
 public class Users {
     @Id
     @Column(name = "USERNAME", nullable = false, length = 200)
@@ -20,6 +35,16 @@ public class Users {
     @JsonManagedReference
     private Set<TasksTime> tasksTimes = new LinkedHashSet<>();
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    @Transient
+    private int points;
     public Users() {
     }
 
@@ -51,5 +76,4 @@ public class Users {
     public void setTasksTimes(Set<TasksTime> tasksTimes) {
         this.tasksTimes = tasksTimes;
     }
-
 }
