@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<Users, String> {
-    @Query(nativeQuery = true, name = "test")
+    @Query(nativeQuery = true, name = "scoreboard")
     List<UserPoints> getUsersPoints();
 }

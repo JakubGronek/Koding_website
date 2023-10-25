@@ -69,10 +69,9 @@ class Endpoints {
 
     };
 
-    @GetMapping("/test")
+    @RequestMapping(value = "/scoreboard", method = RequestMethod.GET)
     public ResponseEntity<List<UserPoints>> scoreboard(){
         List<UserPoints> userPoints = userRepository.getUsersPoints();
-
-         return ResponseEntity.ok().body(userPoints);
+        return ResponseEntity.ok().body(userPoints);
     }
 }

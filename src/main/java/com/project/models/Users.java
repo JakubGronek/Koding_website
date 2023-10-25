@@ -9,8 +9,11 @@ import java.util.Set;
 @Entity
 @Table(name = "USERS")
 @NamedNativeQuery(
-        name="test",
-        query = "Select users.username, sum(tasks.points) as points  from users inner join tasks_time on users.username = tasks_time.username inner join tasks on tasks_time.task_id = tasks.id group by users.username",
+        name="scoreboard",
+        query = "Select " +
+                "users.username, sum(tasks.points) as points  " +
+                "from users inner join tasks_time on users.username = tasks_time.username inner join tasks on tasks_time.task_id = tasks.id " +
+                "group by users.username limit 25",
         resultSetMapping = "userPoints"
 )
 @SqlResultSetMapping(
