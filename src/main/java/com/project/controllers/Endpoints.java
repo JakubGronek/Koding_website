@@ -8,6 +8,7 @@ import com.project.repositories.TaskRepository;
 import com.project.repositories.UserRepository;
 import com.project.utility.AuthUtil;
 import com.project.utility.Test;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.File;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -86,7 +88,14 @@ class Endpoints {
 
         File file = new File(System.currentTimeMillis()/1000+".py");
         file.createNewFile();
-        Test test = new Test(file.getName(), body.optString("code"));
+        FileWriter fileWriter = new FileWriter(file.getName());
+        try {
+            fileWriter.write(body.getString("code"));
+            fileWriter.close();
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
+        Test test = new Test(file.getName(), "input");
         Thread thread = new Thread(test);
         thread.start();
         thread.join();
