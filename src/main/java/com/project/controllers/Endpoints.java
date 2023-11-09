@@ -7,13 +7,16 @@ import com.project.models.Users;
 import com.project.repositories.TaskRepository;
 import com.project.repositories.UserRepository;
 import com.project.utility.AuthUtil;
+import com.project.utility.Test;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.File;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -68,6 +71,31 @@ class Endpoints {
         return taskData.map(tasks -> new ResponseEntity<>(tasks, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     };
+
+    @PostMapping(value = "/tasks/{id}")
+    public ResponseEntity<Object> submitUserCode(@RequestBody String json) throws IOException, InterruptedException {
+        JSONObject body = new JSONObject(json);
+
+        String token = body.optString("token");
+
+        if (token.equals(""))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Users currentUser = AuthUtil.getUser(token, userRepository);
+        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+        File file = new File(System.currentTimeMillis()/1000+".py");
+        file.createNewFile();
+        Test test = new Test(file.getName(), body.optString("code"));
+        Thread thread = new Thread(test);
+        thread.start();
+        thread.join();
+        String output = test.getOutput();
+        if (output != null){
+            return ResponseEntity.ok().body(output);
+        }
+        return ResponseEntity.ok().body("Kod nie przeszedł wszystkich przypadków testowych");
+    }
 
     @RequestMapping(value = "/scoreboard", method = RequestMethod.GET)
     public ResponseEntity<List<UserPoints>> scoreboard(){

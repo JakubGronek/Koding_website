@@ -5,6 +5,7 @@ import java.io.*;
 public class Test extends Thread {
     String script_name;
     String input;
+    private volatile String output;
 
     public Test(String script_name, String input) {
         this.input = input;
@@ -30,6 +31,7 @@ public class Test extends Thread {
             String read;
             while ((read = reader.readLine()) != null) {
                 System.out.println(read);
+                output+=read;
             }
 
         } catch (Exception e) {
@@ -40,5 +42,9 @@ public class Test extends Thread {
     @Override
     public void run() {
         test();
+    }
+
+    public String getOutput(){
+        return output;
     }
 }
