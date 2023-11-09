@@ -1,3 +1,7 @@
+drop table if exists tasks cascade;
+drop table if exists test_case cascade;
+drop table if exists users cascade;
+drop table if exists tasks_time cascade;
 create table if not exists TASKS(
     ID  INTEGER auto_increment primary key,
     NAME CHARACTER VARYING(200) not null,
