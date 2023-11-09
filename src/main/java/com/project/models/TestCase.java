@@ -20,10 +20,10 @@ public class TestCase {
     private com.project.models.Tasks task;
 
     @Column(name = "INPUT", nullable = false)
-    private Integer input;
+    private String input;
 
     @Column(name = "OUTPUT", nullable = false)
-    private Integer output;
+    private String output;
 
     public Integer getId() {
         return id;
@@ -41,19 +41,19 @@ public class TestCase {
         this.task = task;
     }
 
-    public Integer getInput() {
+    public String getInput() {
         return input;
     }
 
-    public void setInput(Integer input) {
+    public void setInput(String input) {
         this.input = input;
     }
 
-    public Integer getOutput() {
+    public String getOutput() {
         return output;
     }
 
-    public void setOutput(Integer output) {
+    public void setOutput(String output) {
         this.output = output;
     }
 
