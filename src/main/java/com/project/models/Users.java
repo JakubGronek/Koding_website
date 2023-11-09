@@ -48,8 +48,6 @@ public class Users {
 
     @Transient
     private int points;
-    public Users() {
-    }
 
     public Users(String username, String password) {
         this.username = username;

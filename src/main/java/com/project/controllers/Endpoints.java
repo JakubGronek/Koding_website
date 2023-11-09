@@ -1,10 +1,8 @@
 package com.project.controllers;
 
-import com.project.models.Tasks;
-import com.project.models.TasksTime;
-import com.project.models.UserPoints;
-import com.project.models.Users;
+import com.project.models.*;
 import com.project.repositories.TaskRepository;
+import com.project.repositories.TestCaseRepository;
 import com.project.repositories.UserRepository;
 import com.project.utility.AuthUtil;
 import com.project.utility.Test;
@@ -29,6 +27,9 @@ class Endpoints {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TestCaseRepository testCaseRepository;
 
     @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllTasks(@RequestBody String json){
@@ -75,7 +76,7 @@ class Endpoints {
     };
 
     @PostMapping(value = "/tasks/{id}")
-    public ResponseEntity<Object> submitUserCode(@RequestBody String json) throws IOException, InterruptedException {
+    public ResponseEntity<Object> submitUserCode(@PathVariable("id") Long id, @RequestBody String json) throws IOException, InterruptedException {
         JSONObject body = new JSONObject(json);
 
         String token = body.optString("token");
@@ -95,15 +96,24 @@ class Endpoints {
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
-        Test test = new Test(file.getName(), "input");
-        Thread thread = new Thread(test);
-        thread.start();
-        thread.join();
-        String output = test.getOutput();
-        if (output != null){
-            return ResponseEntity.ok().body(output);
+        Tasks taskData = taskRepository.findById(id).get();
+        Set<TestCase> testCases = taskData.getTestCases();
+        int passedTestCases = 0;
+        for(TestCase testCase : testCases){
+            Test test = new Test(file.getName(), testCase.getInput());
+            Thread thread = new Thread(test);
+            thread.start();
+            thread.join();
+            String output = test.getOutput();
+            if (Objects.equals(output, testCase.getOutput())){
+                passedTestCases++;
+            }
         }
-        return ResponseEntity.ok().body("Kod nie przeszedł wszystkich przypadków testowych");
+        file.delete();
+        if (passedTestCases==testCases.size()){
+            return ResponseEntity.ok().body("Gratulacje, Twój kod przeszedł wszystkie przypadki");
+        }
+        return ResponseEntity.ok().body("Niestety, Twój kod przeszedł "+passedTestCases+"/"+testCases.size()+" przypadków");
     }
 
     @RequestMapping(value = "/scoreboard", method = RequestMethod.GET)
