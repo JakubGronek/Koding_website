@@ -33,7 +33,7 @@ class Auth {
         String username = body.optString("username");
         String password = body.optString("password");
 
-        if (username.equals("") || password.equals(""))
+        if (username.isEmpty() || password.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         Optional<Users> usersData = userRepository.findById(username);
@@ -52,13 +52,13 @@ class Auth {
     };
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Users> registerAuth(@RequestBody String json) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    public ResponseEntity<Users> registerAuth(@RequestBody String json) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         JSONObject body = new JSONObject(json);
 
         String username = body.optString("username");
         String password = body.optString("password");
 
-        if (username.equals("") || password.equals(""))
+        if (username.isEmpty() || password.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 
@@ -76,7 +76,7 @@ class Auth {
         JSONObject body = new JSONObject(json);
 
         String token = body.optString("token");
-        if (token.equals(""))
+        if (token.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         String username = AuthUtil.getUsername(token);

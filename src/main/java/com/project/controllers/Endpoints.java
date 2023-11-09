@@ -36,7 +36,7 @@ class Endpoints {
 
         String token = body.optString("token");
 
-        if (token.equals(""))
+        if (token.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         Users currentUser = AuthUtil.getUser(token, userRepository);
