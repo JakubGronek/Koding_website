@@ -29,9 +29,12 @@ public class Test extends Thread {
             writer.flush();
             p.waitFor();
             String read;
-            while ((read = reader.readLine()) != null) {
-                System.out.println(read);
-                output+=read;
+            try {
+                read = reader.readLine();
+                System.out.println(read+" "+read.length());
+                this.output = read;
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
         } catch (Exception e) {

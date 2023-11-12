@@ -38,6 +38,8 @@ public class Users {
     @JsonManagedReference
     private Set<TasksTime> tasksTimes = new LinkedHashSet<>();
 
+    public Users() {}
+
     public int getPoints() {
         return points;
     }
