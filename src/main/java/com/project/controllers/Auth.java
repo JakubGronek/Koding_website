@@ -27,19 +27,19 @@ class Auth {
     UserRepository userRepository;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> loginAuth(@RequestBody String json) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    public ResponseEntity<Object> loginAuth(@RequestBody String json) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         JSONObject body = new JSONObject(json);
 
         String username = body.optString("username");
         String password = body.optString("password");
 
         if (username.isEmpty() || password.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing username or password");
 
         Optional<Users> usersData = userRepository.findById(username);
         if(usersData.isPresent()){
             if (!AuthUtil.comparePasswordHash(password,usersData.get().getPassword()))
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong password");
 
             String token = AuthUtil.createToken(usersData.get().getUsername());
 
@@ -77,12 +77,12 @@ class Auth {
 
         String token = body.optString("token");
         if (token.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
 
         String username = AuthUtil.getUsername(token);
 
         if (username == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing username");
 
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "username", username

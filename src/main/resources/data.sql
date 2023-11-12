@@ -1,14 +1,14 @@
 INSERT INTO users values ('test','+ZTUPGMKhANnnjyVuEiwfg=='); -- username: test, password: test
 INSERT INTO tasks (name, shortdesc, description, points) values ('Odwrócony napis','Wyświetl napis od tyłu','Kod przyjmuje na wejściu string, a na wyjściu zwraca string wyświetlony od tyłu',10);
 INSERT INTO test_case values (1, 'a', 'a', 1);
-INSERT INTO test_case values (1, 'python', 'nothyp', 2);
+INSERT INTO test_case values (1, 'python', 'nohtyp', 2);
 INSERT INTO test_case values (1, 'ala ma kota', 'atok am ala', 3);
 INSERT INTO test_case values (1, 'opo', 'opo', 4);
-INSERT INTO tasks (name, shortdesc, description, points) values ('Ostatnie elementy', 'Wyświetl ostatnie 3 elementy tablicy', 'Kod przyjmuje na wejściu string (liczby oddzielone spacją), a na wyjściu zwraca maksymalnie 3 ostatnie elementy z tablicy', 15);
+INSERT INTO tasks (name, shortdesc, description, points) values ('Ostatnie elementy', 'Wyświetl ostatnie 3 elementy tablicy', 'Kod przyjmuje na wejściu string (liczby całkowite lub zmiennoprzecinkowe oddzielone spacją), a na wyjściu zwraca maksymalnie 3 ostatnie elementy z tablicy', 15);
 INSERT INTO test_case values (2, '1 2 3 4 5', '[3, 4, 5]', 5);
 INSERT INTO test_case values (2, '1', '[1]', 6);
 INSERT INTO test_case values (2, '', '[]', 7);
-INSERT INTO test_case values (2, '1.5 2.3 3 4.6', '[2.3, 3, 4.6]', 8);
+INSERT INTO test_case values (2, '1.5 2.3 3 4.6', '[2.3, 3.0, 4.6]', 8);
 INSERT INTO tasks (name, shortdesc, description, points) values ('Sortowanie', 'Wyświetl posortowaną leksykograficznie tablicę' ,'Kod przyjmuje na wejściu X napisów oddzielonych spacjami, a na wyjściu zwraca posortowaną tablicę', 20);
 INSERT INTO test_case values (3, '8hT&$kLp@ 2qW*9sE# pR5$yZaX! b7U^6jGv K#Lm3oQ1 tV9wP@Ii s4A%xNfO zY6&dC8B J7FqP*Rv xZ#D2MnH' , ARRAY['2qW*9sE#', '8hT&$kLp@', 'J7FqP*Rv', 'K#Lm3oQ1', 'b7U^6jGv', 'pR5$yZaX!', 's4A%xNfO', 'tV9wP@Ii', 'xZ#D2MnH', 'zY6&dC8B'], 9);
 INSERT INTO test_case values (3, 'A a Aa AA aa aA', ARRAY['A', 'a', 'AA', 'Aa', 'aA', 'aa'], 10);

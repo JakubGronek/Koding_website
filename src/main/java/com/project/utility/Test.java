@@ -31,7 +31,7 @@ public class Test extends Thread {
             String read;
             try {
                 read = reader.readLine();
-                System.out.println(read+" "+read.length());
+                //System.out.println(read+" "+read.length());
                 this.output = read;
             }catch (Exception e){
                 e.printStackTrace();

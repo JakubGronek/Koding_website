@@ -38,10 +38,10 @@ class Endpoints {
         String token = body.optString("token");
 
         if (token.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
 
         Users currentUser = AuthUtil.getUser(token, userRepository);
-        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not logged in");
 
         List<Tasks> tasks = new ArrayList<>(taskRepository.findAll());
         List<Map<String, Object>> tasksOut = new ArrayList<>();
@@ -81,8 +81,8 @@ class Endpoints {
 
         String token = body.optString("token");
 
-        if (token.equals(""))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (token.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
 
         Users currentUser = AuthUtil.getUser(token, userRepository);
         if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -106,8 +106,11 @@ class Endpoints {
             thread.join();
             String output = test.getOutput();
             if (Objects.equals(output, testCase.getOutput())){
-                //System.out.println("Test z "+output+" i "+testCase.getOutput()+" przeszedł");
+                System.out.println("Test z "+testCase.getInput()+" i "+testCase.getOutput()+" przeszedł");
                 passedTestCases++;
+            }
+            else{
+                System.out.println(testCase.getInput()+" "+testCase.getInput());
             }
         }
         file.delete();
