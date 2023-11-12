@@ -189,3 +189,5 @@ sketch
 .idea/
 target/
 database/
+
+*.py

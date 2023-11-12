@@ -106,6 +106,7 @@ class Endpoints {
             thread.join();
             String output = test.getOutput();
             if (Objects.equals(output, testCase.getOutput())){
+                //System.out.println("Test z "+output+" i "+testCase.getOutput()+" przeszedł");
                 passedTestCases++;
             }
         }
