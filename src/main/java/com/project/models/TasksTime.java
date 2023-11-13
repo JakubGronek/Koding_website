@@ -12,6 +12,7 @@ import java.time.Instant;
 public class TasksTime {
     @Id
     @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -28,6 +29,14 @@ public class TasksTime {
 
     @Column(name = "FINISH_TIME", nullable = false)
     private Instant finishTime;
+
+    public TasksTime(Users user, Tasks task, Instant finishTime) {
+        this.user = user;
+        this.task = task;
+        this.finishTime = finishTime;
+    }
+
+    public TasksTime() {}
 
     public Integer getId() {
         return id;

@@ -27,6 +27,6 @@ create table if not exists TASKS_TIME(
     USERNAME CHARACTER VARYING(200) not null references USERS,
     TASK_ID INTEGER not null references TASKS,
     FINISH_TIME TIMESTAMP not null,
-    ID INTEGER not null,
+    ID INTEGER auto_increment not null,
     constraint "TASKS_TIME_pk" primary key (ID)
 );

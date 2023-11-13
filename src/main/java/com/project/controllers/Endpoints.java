@@ -2,6 +2,7 @@ package com.project.controllers;
 
 import com.project.models.*;
 import com.project.repositories.TaskRepository;
+import com.project.repositories.TaskTimeRepository;
 import com.project.repositories.TestCaseRepository;
 import com.project.repositories.UserRepository;
 import com.project.utility.AuthUtil;
@@ -17,6 +18,7 @@ import java.io.File;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 
 @RestController
@@ -24,12 +26,12 @@ import java.util.*;
 class Endpoints {
     @Autowired
     TaskRepository taskRepository;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     TestCaseRepository testCaseRepository;
+    @Autowired
+    TaskTimeRepository taskTimeRepository;
 
     @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllTasks(@RequestBody String json){
@@ -115,6 +117,8 @@ class Endpoints {
         }
         file.delete();
         if (passedTestCases==testCases.size()){
+            Tasks currentTask = taskRepository.findById(id).get();
+            taskTimeRepository.save(new TasksTime(currentUser, currentTask, Instant.now()));
             return ResponseEntity.ok().body("Gratulacje, Twój kod przeszedł wszystkie przypadki");
         }
         return ResponseEntity.ok().body("Niestety, Twój kod przeszedł "+passedTestCases+"/"+testCases.size()+" przypadków");
