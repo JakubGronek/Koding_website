@@ -7,6 +7,7 @@ import com.project.repositories.TestCaseRepository;
 import com.project.repositories.UserRepository;
 import com.project.utility.AuthUtil;
 import com.project.utility.Test;
+import org.json.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,19 @@ class Endpoints {
     }
 
     @GetMapping(value = "/tasks/{id}")
-    public ResponseEntity<Tasks> getTaskById(@PathVariable("id") Long id, @RequestHeader("token") String token)    {
-        Optional<Tasks> taskData = taskRepository.findById(id);
-        return taskData.map(tasks -> new ResponseEntity<>(tasks, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Object> getTaskById(@PathVariable("id") Long id, @RequestHeader("token") String token)    {
+        Tasks taskData = taskRepository.findById(id).get();
+        Set<TestCase> tmp= taskData.getTestCases();
+        TestCase example = (TestCase) tmp.toArray()[0];
+        List<Map<String, Object>> out = new ArrayList<>();
+        out.add(Map.of(
+                "id", taskData.getId(),
+                "name", taskData.getName(),
+                "desc", taskData.getDescription(),
+                "input", example.getInput(),
+                "output", example.getOutput()
+        ));
+        return ResponseEntity.status(HttpStatus.OK).body(out);
 
     };
 
