@@ -11,9 +11,6 @@ export interface RESTCallProps extends RESTFormProps {
 export async function callRemoteREST({ action, method = "GET", credentials = "include", token, data, delayTolerance = DEFAULT_DELAY_TOLERANCE, onComplete, onDelayed }: RESTCallProps) {
     const body = Object.assign({}, data);
 
-    if (credentials === "include")
-        body["token"] = token;
-
     const tID = setTimeout(() => {
         if (onDelayed) onDelayed();
     }, delayTolerance)
@@ -21,7 +18,8 @@ export async function callRemoteREST({ action, method = "GET", credentials = "in
     const res = await fetch(API_BASE_URL + action, {
         method,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "token": credentials === "include" ? token : null
         },
         body: JSON.stringify(body)
     });

@@ -31,19 +31,19 @@ const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
                 token: authState.token,
                 data: new Map<string, string>(),
                 onComplete: (result) => {
-                    let authStateNew: AuthState = Object.assign({}, authState);
-
                     if (!result.success) {
                         console.log("Invalid session, dropping.");
-                        authStateNew = { token: null, username: null };
+                        setAuthState({ token: null, username: null });
                     }
-
-                    setAuthState(authStateNew);
-                    window.localStorage.setItem("auth", JSON.stringify(authStateNew)); 
                 }
             }) 
         }
-    }, [ authState ]);
+    }, []);
+
+    useEffect(() => {
+        window.localStorage.setItem("auth", JSON.stringify(authState));
+        console.log(authState);
+    }, [authState]);
 
     const setAuth = async (token: string, username: string) => {
         setAuthState({

@@ -29,11 +29,11 @@ const TasksProvider : React.FC<React.PropsWithChildren<unknown>> = ({ children }
 
     const refreshTasks = async () => {
         const res = await fetch(API_BASE_URL + "/api/tasks", {
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                token
             },
-            body: JSON.stringify({ token })
         });
 
         if (res.status === 401) {

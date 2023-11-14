@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui/button";
-
-
-import { Textarea } from "@/components/ui/textarea"
 import { TasksContext } from "./TasksContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Play } from "lucide-react";
+import CodeEditor from "@uiw/react-textarea-code-editor"
 
 
 function EditorButtons() {
@@ -27,6 +25,8 @@ function Editor() {
     const { id } = useParams();
 
     const task = tasks.find((t) => t.id.toString() === id);
+
+    const [ code, setCode ] = useState('print("hello!")');
 
     if (!task) {
         toast({
@@ -69,7 +69,16 @@ function Editor() {
             </div>
             <div className="flex flex-col col-span-2">
                 <span className="text-sm text-muted-foreground">KOD</span>
-                <Textarea className="flex-1" />
+                <CodeEditor
+                    value={code}
+                    language="python"
+                    placeholder="Python code"
+                    onChange={(e) => setCode(e.target.value)}
+                    className="flex-1 rounded-md border bg-background"
+                    style={{
+                        background: "hsl(var(--background)",
+                        fontSize: 15
+                    }} />
             </div>
             <div className="flex flex-col col-span-2">
                 <span className="text-sm text-muted-foreground">KONSOLA</span>
