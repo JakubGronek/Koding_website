@@ -71,11 +71,8 @@ class Auth {
         }
     };
 
-    @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getUserInfo(@RequestBody String json) {
-        JSONObject body = new JSONObject(json);
-
-        String token = body.optString("token");
+    @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getUserInfo(@RequestHeader("token") String token) {
         if (token.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
 

@@ -33,11 +33,8 @@ class Endpoints {
     @Autowired
     TaskTimeRepository taskTimeRepository;
 
-    @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAllTasks(@RequestBody String json){
-        JSONObject body = new JSONObject(json);
-
-        String token = body.optString("token");
+    @GetMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllTasks(@RequestHeader("token") String token){
 
         if (token.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
@@ -69,19 +66,16 @@ class Endpoints {
         return ResponseEntity.status(HttpStatus.OK).body(tasksOut);
     }
 
-    @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Tasks> getTaskById(@PathVariable("id") Long id )
-    {
+    @GetMapping(value = "/tasks/{id}")
+    public ResponseEntity<Tasks> getTaskById(@PathVariable("id") Long id, @RequestHeader("token") String token)    {
         Optional<Tasks> taskData = taskRepository.findById(id);
         return taskData.map(tasks -> new ResponseEntity<>(tasks, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     };
 
     @PostMapping(value = "/tasks/{id}")
-    public ResponseEntity<Object> submitUserCode(@PathVariable("id") Long id, @RequestBody String json) throws IOException, InterruptedException {
+    public ResponseEntity<Object> submitUserCode(@PathVariable("id") Long id, @RequestBody String json, @RequestHeader("token") String token) throws IOException, InterruptedException {
         JSONObject body = new JSONObject(json);
-
-        String token = body.optString("token");
 
         if (token.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing token");
@@ -124,8 +118,13 @@ class Endpoints {
         return ResponseEntity.ok().body("Niestety, Twój kod przeszedł "+passedTestCases+"/"+testCases.size()+" przypadków");
     }
 
-    @RequestMapping(value = "/scoreboard", method = RequestMethod.GET)
-    public ResponseEntity<List<UserPoints>> scoreboard(){
+    @GetMapping(value = "/scoreboard")
+    public ResponseEntity<List<UserPoints>> scoreboard(@RequestHeader("token") String token){
+        if (token.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Users currentUser = AuthUtil.getUser(token, userRepository);
+        if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         List<UserPoints> userPoints = userRepository.getUsersPoints();
         return ResponseEntity.ok().body(userPoints);
     }
