@@ -37,6 +37,8 @@ const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
                     }
                 }
             }) 
+        } else {
+            setAuthState({ token: null, username: null });
         }
     }, []);
 

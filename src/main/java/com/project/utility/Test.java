@@ -20,7 +20,9 @@ public class Test extends Thread {
 
             OutputStream stdin = p.getOutputStream();
             InputStream stdout = p.getInputStream();
+            InputStream stderr = p.getErrorStream();
 
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(stderr));
             BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
 
@@ -28,12 +30,23 @@ public class Test extends Thread {
             writer.newLine();
             writer.flush();
             p.waitFor();
+
+            String output = "";
             String read;
+
+            String err = "";
+
             try {
-                read = reader.readLine();
-                //System.out.println(read+" "+read.length());
-                this.output = read;
-            }catch (Exception e){
+                while ((read = reader.readLine()) != null) {
+                    output += read + "\n";
+                }
+
+                while ((read = errorReader.readLine()) != null) {
+                    output += read + "\n";
+                }
+
+                this.output = output.trim();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

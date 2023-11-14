@@ -21,10 +21,6 @@ function Layout() {
                     <Outlet />
                 </TasksProvider>
 
-                <APIForm action="/api/test" credentials="include" onCallComplete={() => console.log}>
-
-                </APIForm>
-
                 <Toaster />
             </AuthDialogContext.Provider>
         </AuthProvider>

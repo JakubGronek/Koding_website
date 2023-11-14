@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
 
 import './index.css'
 import Layout from './Layout.tsx'
@@ -10,7 +10,7 @@ import Landing from './Landing.tsx'
 import Editor from './Editor.tsx'
 import Leaderboard from './Leaderboard.tsx'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Layout />,

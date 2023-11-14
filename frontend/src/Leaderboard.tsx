@@ -1,4 +1,7 @@
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "./globals";
+import { useAuth } from "./useAuth";
 
 interface UserLeaderboardEntryProps {
     place: number,
@@ -24,18 +27,44 @@ function UserLeaderboardEntry({ place, username, points }: UserLeaderboardEntryP
     )
 }
 
+interface LeaderboardUser {
+    username: string,
+    points: number
+}
+
 function Leaderboard() {
+    const { token } = useAuth();
+    const [ users, setUsers ] = useState<LeaderboardUser[]>([]);
+
+    const fetchLeaderboard = async () => {
+        const res = await fetch(API_BASE_URL + "/api/scoreboard", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                token
+            }
+        })
+
+        if (res.ok) {
+            const scoreboard = await res.json();
+            setUsers(scoreboard);
+        }
+    }
+
+    useEffect(() => {
+        fetchLeaderboard();
+    }, [])
+
     return (
         <div className="flex flex-col items-center p-8 w-[512px] mx-auto gap-4">
             <h1 className="text-2xl my-16">Rankingi</h1>
-
-            <UserLeaderboardEntry place={1} username="jacek" points={256} />
-            <UserLeaderboardEntry place={2} username="jacek" points={256} />
-            <UserLeaderboardEntry place={3} username="jacek" points={256} />
-            <div className="w-full h-px bg-muted my-8"></div>
-            <UserLeaderboardEntry place={4} username="jacek" points={256} />
-            <UserLeaderboardEntry place={5} username="jacek" points={256} />
-
+            {
+                users.map((v, i) => {
+                    return (
+                        <UserLeaderboardEntry place={i+1} username={v.username} points={v.points} />
+                    )
+                })
+            }
         </div>
     )
 }

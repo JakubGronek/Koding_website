@@ -9,7 +9,9 @@ type TaskType = {
     short: string,
     desc: string,
     points: number,
-    completed: boolean
+    completed: boolean,
+    output: string,
+    input: string
 };
 
 type TasksContextType = {

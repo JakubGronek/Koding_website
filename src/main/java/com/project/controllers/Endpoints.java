@@ -54,12 +54,16 @@ class Endpoints {
                 }
             }
 
+            TestCase test = task.getTestCases().stream().findFirst().get();
+
             tasksOut.add(Map.of(
                     "id", task.getId(),
                     "name", task.getName(),
                     "short", task.getShortdesc(),
                     "desc", task.getDescription(),
                     "points", task.getPoints(),
+                    "input", test.getInput(),
+                    "output", test.getOutput(),
                     "completed", completed
             ));
         }
@@ -107,14 +111,16 @@ class Endpoints {
         Set<TestCase> testCases = taskData.getTestCases();
         List<String> outs = new ArrayList<>();
         int passedTestCases = 0;
-        int i = 0;
+        int i = 1;
         for(TestCase testCase : testCases){
-
             Test test = new Test(file.getName(), testCase.getInput());
             Thread thread = new Thread(test);
+            outs.add("[" + i + "/" + testCases.size() + "] Running test...");
+            outs.add("[" + i + "/" + testCases.size() + "] Input: " + testCase.getInput());
             thread.start();
             thread.join();
             String output = test.getOutput();
+
             outs.add(output);
 
             if (Objects.equals(output, testCase.getOutput())){
@@ -124,11 +130,10 @@ class Endpoints {
             }
             else{
                 outs.add("[" + i + "/" + testCases.size() + "] Failed! ");
-                outs.add("[" + i + "/" + testCases.size() + "] Expected:  ");
-
-                outs.add(testCase.getOutput());
+                outs.add("[" + i + "/" + testCases.size() + "] Expected: " + testCase.getOutput());
                 System.out.println(testCase.getInput()+" "+testCase.getInput());
             }
+            i++;
         }
 
         file.delete();
