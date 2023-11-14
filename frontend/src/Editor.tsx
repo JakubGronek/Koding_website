@@ -5,30 +5,25 @@ import { Navigate, useParams } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Play } from "lucide-react";
 import CodeEditor from "@uiw/react-textarea-code-editor"
+import { API_BASE_URL } from "./globals";
+import { useAuth } from "./useAuth";
 
-
-function EditorButtons() {
-    return (
-        <>
-            <Button>
-                <Play size={16} className="mr-2" />
-                Run
-            </Button>
-        </>
-    )
-}
 
 
 function Editor() {
     const { tasks } = useContext(TasksContext);
+    const { token } = useAuth();
     const { toast } = useToast();
     const { id } = useParams();
 
     const task = tasks.find((t) => t.id.toString() === id);
 
     const [ code, setCode ] = useState('print("hello!")');
+    const [ output, setOutput ] = useState("Gotowy.");
+    const [ pending, setPending ] = useState(false);
 
     if (!task) {
+        console.log(tasks);
         toast({
             title: "Zadanie nie istnieje",
             description: "Przekierowano na liste zadan.",
@@ -37,11 +32,54 @@ function Editor() {
         return <Navigate to="/tasks" />
     }
 
+    const addOutput = (str, delim = "\n") => {
+        setOutput(output + delim + str);
+    }
+
+    const submitCode = async () => {
+        setPending(true);
+        addOutput("Wywoływanie kodu...");
+
+        const res = await fetch(API_BASE_URL + "/api/tasks/" + id, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                token
+            },
+            body: JSON.stringify({ code })
+        });
+
+        if (!res.ok) {
+            toast({
+                title: "Wystapil blad",
+                description: res.statusText,
+                variant: "destructive"
+            })
+        } else {
+            const json = await res.json();
+            
+            if (json.success) {
+                toast({
+                    title: "gratulacje"
+                });
+            } else {
+                toast({
+                    title: "zle"
+                });
+            }
+
+            addOutput(json.output);
+        }
+    }
+
     return (
         <div className="grid gap-4 flex-1 p-8 max-w-screen-2xl w-full mx-auto editor-grid">
             <div className="row-span-1 col-span-3">
                 <div className="flex ml-auto w-fit gap-2">
-                    <EditorButtons />
+                    <Button disabled={pending} onClick={submitCode}>
+                        <Play size={16} className="mr-2" />
+                        Run
+                    </Button>
                 </div>
             </div>
             <div className="flex flex-col row-span-2">
@@ -71,6 +109,7 @@ function Editor() {
                 <span className="text-sm text-muted-foreground">KOD</span>
                 <CodeEditor
                     value={code}
+                    disabled={pending}
                     language="python"
                     placeholder="Python code"
                     onChange={(e) => setCode(e.target.value)}
@@ -82,8 +121,8 @@ function Editor() {
             </div>
             <div className="flex flex-col col-span-2">
                 <span className="text-sm text-muted-foreground">KONSOLA</span>
-                <code className="flex-1 border p-4 rounded-md">
-                    <br />
+                <code className="flex-1 border p-4 rounded-md whitespace-pre-line">
+                    {output}
                 </code>
             </div>
         </div>

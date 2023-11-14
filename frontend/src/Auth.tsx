@@ -42,7 +42,6 @@ const AuthProvider : React.FC<PropsWithChildren<unknown>> = ({children}) => {
 
     useEffect(() => {
         window.localStorage.setItem("auth", JSON.stringify(authState));
-        console.log(authState);
     }, [authState]);
 
     const setAuth = async (token: string, username: string) => {

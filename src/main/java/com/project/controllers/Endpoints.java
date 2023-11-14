@@ -105,28 +105,45 @@ class Endpoints {
         }
         Tasks taskData = taskRepository.findById(id).get();
         Set<TestCase> testCases = taskData.getTestCases();
+        List<String> outs = new ArrayList<>();
         int passedTestCases = 0;
+        int i = 0;
         for(TestCase testCase : testCases){
+
             Test test = new Test(file.getName(), testCase.getInput());
             Thread thread = new Thread(test);
             thread.start();
             thread.join();
             String output = test.getOutput();
+            outs.add(output);
+
             if (Objects.equals(output, testCase.getOutput())){
-                System.out.println("Test z "+testCase.getInput()+" i "+testCase.getOutput()+" przeszedł");
+                outs.add("[" + i + "/" + testCases.size() + "] Passed!");
+                //System.out.println("Test z "+testCase.getInput()+" i "+testCase.getOutput()+" przeszedł");
                 passedTestCases++;
             }
             else{
+                outs.add("[" + i + "/" + testCases.size() + "] Failed! ");
+                outs.add("[" + i + "/" + testCases.size() + "] Expected:  ");
+
+                outs.add(testCase.getOutput());
                 System.out.println(testCase.getInput()+" "+testCase.getInput());
             }
         }
+
         file.delete();
+
         if (passedTestCases==testCases.size()){
             Tasks currentTask = taskRepository.findById(id).get();
             taskTimeRepository.save(new TasksTime(currentUser, currentTask, Instant.now()));
-            return ResponseEntity.ok().body("Gratulacje, Twój kod przeszedł wszystkie przypadki");
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "output", String.join("\n", outs)));
         }
-        return ResponseEntity.ok().body("Niestety, Twój kod przeszedł "+passedTestCases+"/"+testCases.size()+" przypadków");
+
+        return ResponseEntity.ok().body(Map.of(
+                "success", false,
+                "output", String.join("\n", outs)));
     }
 
     @GetMapping(value = "/scoreboard")
