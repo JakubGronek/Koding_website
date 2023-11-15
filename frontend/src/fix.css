@@ -1,0 +1,19 @@
+@import url('https://fonts.cdnfonts.com/css/cascadia-code');
+
+.w-tc-editor {
+    --color-fg-default: #c9d1d9;
+    --color-canvas-subtle: #161b22;
+    --color-prettylights-syntax-comment: #B7D3F2;
+    --color-prettylights-syntax-entity-tag: #7ee787;
+    --color-prettylights-syntax-entity: #d2a8ff;
+    --color-prettylights-syntax-sublimelinter-gutter-mark: #E5FCFF;
+    --color-prettylights-syntax-constant: #8A84E2;
+    --color-prettylights-syntax-string: #a5d6ff;
+    --color-prettylights-syntax-keyword: #ff7b72;
+    --color-prettylights-syntax-markup-bold: #c9d1d9;
+}
+
+.w-tc-editor .code-line, .w-tc-editor .token, .w-tc-editor {
+    font-family: 'Cascadia Code', monospace;
+    font-size: 16px;
+}

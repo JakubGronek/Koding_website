@@ -9,6 +9,8 @@ import { API_BASE_URL } from "./globals";
 import { useAuth } from "./useAuth";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+import './fix.css';
+
 interface EditorDialogProps {
     onOpenChange: (open) => void,
     open: boolean,
@@ -29,12 +31,14 @@ function EditorTaskCompletedDialog({ onOpenChange, open, nextTaskId, points }: E
                     +{points} punktow
                 </div>
                 <DialogFooter className="flex flex-row">
-                    <Button className="flex-1" variant="outline"><ArrowBigLeftDash className="h-4 w-4 mr-2" /> Powrot</Button>
+                    <a className="flex-1" onClick={() => onOpenChange(false)}>
+                        <Button className="w-full" variant="outline"><ArrowBigLeftDash className="h-4 w-4 mr-2" /> Powrot</Button>
+                    </a>
                     <Link to="/tasks" className="flex-1">
                         <Button className="w-full" variant="secondary"><ScrollText className="h-4 w-4 mr-2" /> Lista zadan</Button>
                     </Link>
                     {
-                        typeof nextTaskId !== "undefined" ? <Link className="flex-1" to={"/tasks/"+nextTaskId}>
+                        typeof nextTaskId !== "undefined" ? <Link onClick={() => onOpenChange(false)} className="flex-1" to={"/editor/"+nextTaskId}>
                             <Button className="w-full" variant="default">Nastepne <ArrowBigRightDash className="h-4 w-4 ml-2" /></Button>
                         </Link> : ""
                     }
@@ -105,9 +109,17 @@ function Editor() {
         setPending(false);
     }
 
+    const onDialogOpenChange = (open) => {
+        if (!open) {
+            setCode('print("hello!")');
+            setOutput("Gotowy.");
+        }
+        setDialogOpen(open);
+    }
+
     return (
         <>
-            <EditorTaskCompletedDialog onOpenChange={setDialogOpen} open={dialogOpen} nextTaskId={nextTask} points={task.points} />
+            <EditorTaskCompletedDialog onOpenChange={onDialogOpenChange} open={dialogOpen} nextTaskId={nextTask} points={task.points} />
             <div className="grid gap-4 flex-1 p-8 max-w-screen-2xl w-full mx-auto editor-grid">
                 <div className="row-span-1 col-span-3">
                     <div className="flex ml-auto w-fit gap-2">
@@ -129,11 +141,11 @@ function Editor() {
                         <div>
                             <p className="mb-4">{task.desc}</p>
                             <b>Przykladowe dane wejsciowe:</b>
-                            <div className="py-1 px-3 bg-zinc-900 rounded-md border mt-2 mb-4">
-                                <code className="text-sm">{task.input}</code>
+                            <div className="py-1 px-3 bg-zinc-900 rounded-md border mt-2 mb-4 overflow-x-scroll w-full max-w-full">
+                                <code className="text-sm ">{task.input}</code>
                             </div>
                             <b>Oczekiwane dane wyjsciowe:</b>
-                            <div className="py-1 px-3 bg-zinc-900 rounded-md border mt-2 mb-4">
+                            <div className="py-1 px-3 bg-zinc-900 rounded-md border mt-2 mb-4 overflow-x-scroll w-full max-w-full">
                                 <code className="text-sm">{task.output}</code>
                             </div>
                             <b>Powodzenia!</b>
@@ -151,7 +163,6 @@ function Editor() {
                         className="flex-1 rounded-md border bg-background"
                         style={{
                             background: "hsl(var(--background)",
-                            fontSize: 15
                         }} />
                 </div>
                 <div className="relative flex flex-col col-span-2 row-span-1">
