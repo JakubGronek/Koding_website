@@ -12,8 +12,8 @@ create table if not exists TASKS(
 
 create table if not exists TEST_CASE(
     TASK_ID INTEGER not null references TASKS,
-    INPUT CHARACTER VARYING(200) not null,
-    OUTPUT CHARACTER VARYING(200) not null,
+    INPUT CHARACTER VARYING(2000) not null,
+    OUTPUT CHARACTER VARYING(2000) not null,
     ID INTEGER not null,
     constraint "TEST_CASE_pk" primary key (ID)
 );
