@@ -13,7 +13,7 @@ public class Test extends Thread {
     }
 
     public void test() {
-        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c"
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c",
                 "docker run --rm -v "+System.getProperty("user.dir")+"/temp/"+script_name+":/root/app/script.py python:latest python /root/app/script.py");
 
         try {
