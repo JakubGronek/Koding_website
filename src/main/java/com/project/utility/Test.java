@@ -13,7 +13,7 @@ public class Test extends Thread {
     }
 
     public void test() {
-        ProcessBuilder pb = new ProcessBuilder(
+        ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c",
                 "docker", "run",
                 "--rm",
                 "-v $(pwd)/temp/"+script_name+":/root/app/script.py",
