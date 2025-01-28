@@ -98,9 +98,9 @@ class Endpoints {
         Users currentUser = AuthUtil.getUser(token, userRepository);
         if (currentUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
-            File file = new File("./temp/"+System.currentTimeMillis()/1000+".py");
-            file.createNewFile();
-        FileWriter fileWriter = new FileWriter(file.getName());
+        File file = new File("./temp/"+System.currentTimeMillis()/1000+".py");
+        file.createNewFile();
+        FileWriter fileWriter = new FileWriter(file);
         try {
             fileWriter.write(body.getString("code"));
             fileWriter.close();
