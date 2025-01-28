@@ -14,7 +14,7 @@ public class Test extends Thread {
 
     public void test() {
         ProcessBuilder pb = new ProcessBuilder(
-                "docker run",
+                "docker", "run",
                 "--rm",
                 "-v "+System.getProperty("user.dir")+"/temp/"+script_name+":/root/app/script.py",
                 "python:latest", "python /root/app/script.py");
